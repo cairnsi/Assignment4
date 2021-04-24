@@ -50,7 +50,7 @@ function get_Boats(req){
 			results.items = results.items.map(boatSelf);
 			results.items = results.items.map(boat_loadSelf);
             if(entities[1].moreResults !== datastore.NO_MORE_RESULTS ){
-                results.next = req.protocol + "://" + req.get("host") + "/boats" + "?cursor=" + entities[1].endCursor;
+                results.next = "https://" + req.get("host") + "/boats" + "?cursor=" + entities[1].endCursor;
             }
 			return results;
 		});
@@ -153,7 +153,7 @@ function get_Loads(req){
 			results.items = results.items.map(loadSelf);
 			results.items = results.items.map(load_boatSelf);
             if(entities[1].moreResults !== datastore.NO_MORE_RESULTS ){
-                results.next = req.protocol + "://" + req.get("host") + "/loads" + "?cursor=" + entities[1].endCursor;
+                results.next = "https://" + req.get("host") + "/loads" + "?cursor=" + entities[1].endCursor;
             }
 			return results;
 		});
@@ -189,7 +189,7 @@ async function delete_Load(id){
 /* ------------- End load Model Functions ------------- */
 /* ------------- Boat Routes -------------------------- */
 app.get('/boats', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	var boats = get_Boats(req)
 	.then( (boats) => {
         res.status(200).json(boats);
@@ -199,7 +199,7 @@ app.get('/boats', async (req, res) => {
 
 
 app.post('/boats', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	if(!req.body.name || !req.body.type || !req.body.length){
 		error = {"Error": "The request object is missing at least one of the required attributes"}
 		res.status(400).send(error);
@@ -213,7 +213,7 @@ app.post('/boats', async (req, res) => {
 });
 
 app.delete('/boats/:id', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	const key = datastore.key([BOAT, parseInt(req.params.id,10)]);
 	boat = await get_Boat(key);
 	if(boat == null){
@@ -227,7 +227,7 @@ app.delete('/boats/:id', async (req, res) => {
 });
 
 app.patch('/boats/:id', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	if(!req.body.name || !req.body.type || !req.body.length){
 		error = {"Error": "The request object is missing at least one of the required attributes"}
 		res.status(400).send(error);
@@ -248,7 +248,7 @@ app.patch('/boats/:id', async (req, res) => {
 });
 
 app.get('/boats/:id', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	const key = datastore.key([BOAT, parseInt(req.params.id,10)]);
 	boat = await get_Boat(key);
 	if(boat == null){
@@ -265,7 +265,7 @@ app.get('/boats/:id', async (req, res) => {
 /* ------------- Load Routes -------------------------- */
 
 app.post('/loads', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	if(!req.body.volume || !req.body.content){
 		error = {"Error": "The request object is missing the required volume or content"}
 		res.status(400).send(error);
@@ -279,7 +279,7 @@ app.post('/loads', async (req, res) => {
 });
 
 app.get('/loads/:id', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	const key = datastore.key([LOAD, parseInt(req.params.id,10)]);
 	load = await get_Load(key);
 	if(load == null){
@@ -293,7 +293,7 @@ app.get('/loads/:id', async (req, res) => {
 });
 
 app.get('/loads', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	var loads = get_Loads(req)
 	.then( (loads) => {
         res.status(200).json(loads);
@@ -301,7 +301,7 @@ app.get('/loads', async (req, res) => {
 });
 
 app.delete('/loads/:id', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	const key = datastore.key([LOAD, parseInt(req.params.id,10)]);
 	load = await get_Load(key);
 	if(load == null){
@@ -315,7 +315,7 @@ app.delete('/loads/:id', async (req, res) => {
 });
 
 app.get('/boats/:boat_id/loads', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	const boat_key = datastore.key([BOAT, parseInt(req.params.boat_id,10)]);
 	[boat] = await datastore.get(boat_key);
 	if(boat==null){
@@ -330,7 +330,7 @@ app.get('/boats/:boat_id/loads', async (req, res) => {
 });
 
 app.put('/boats/:boat_id/loads/:load_id', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	const boat_key = datastore.key([BOAT, parseInt(req.params.boat_id,10)]);
 	[boat] = await datastore.get(boat_key);
 	const load_key = datastore.key([LOAD, parseInt(req.params.load_id,10)]);
@@ -357,7 +357,7 @@ app.put('/boats/:boat_id/loads/:load_id', async (req, res) => {
 
 
 app.delete('/boats/:boat_id/loads/:load_id', async (req, res) => {
-	address = req.protocol + "://" + req.get("host");
+	address = "https://" + req.get("host");
 	const boat_key = datastore.key([BOAT, parseInt(req.params.boat_id,10)]);
 	[boat] = await datastore.get(boat_key);
 	const load_key = datastore.key([LOAD, parseInt(req.params.load_id,10)]);
